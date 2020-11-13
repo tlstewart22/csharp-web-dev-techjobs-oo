@@ -1,0 +1,306 @@
+Your Assignment
+
+The list below provides a general overview of your assigned tasks. 
+Specific details for each part appear in the following sections, 
+so be sure to read them carefully as you solve each problem.
+
+1. Review Sally’s code in the Employer class to learn how to assign a unique ID.
+2. Add properties and custom methods as needed to the Location, CoreCompetency, 
+   and PositionType classes.
+3. Complete the Job class using what you learned in steps 1 and 2.
+4. Use unit testing to verify the constructors and Equals() methods for the Job class.
+5. Use TDD to design and code a custom ToString() method for the Job class.
+6. Use inheritance to DRY the code within Employer, Location, CoreCompetency,
+   and PositionType.
+
+Explore the Employer Class
+
+Open the Employer file in Visual Studio and examine the code. In addition to the three 
+members—nextId, Id, and Value—the class includes some methods like ToString() and Equals().
+
+You can refer to these examples as you fill in the missing pieces in the other classes,
+but for now let’s take a closer look at the constructors.
+
+Assign a Unique ID
+One neat trick we can use is to automatically assign each new object a unique ID number.
+
+Example
+Examine the two constructors in Employer.cs:
+
+ 1| public class Employer {
+ 2|   public int Id { get; }
+ 3|   private static int nextId = 1;
+ 4|   public string Value { get; set; }
+ 5| 
+ 6|   public Employer ()
+ 7|   {
+ 8|      Id = nextId;
+ 9|      nextId++;
+10|   }
+11|
+12|   public Employer (string value) : this()
+13|   {
+14|      Value = value;
+15|   }
+16|
+17|   // Additional methods omitted from this code block
+18| }
+
+1. Line 3 declares the field nextId. Since it is static, its changing value is 
+   NOT stored within any Employer object.
+2. The first constructor (lines 6 - 10) accepts no arguments and assigns the 
+   value of nextId to the id field. It then increments nextId. Thus, every new
+   Employer object will get a different ID number.
+3. The second constructor (lines 12 - 15) assigns the value field. It ALSO 
+   initializes id for the object by calling the first constructor statement 
+   with the : this() syntax. Including : this() in any Employer constructor 
+   makes initializing id a default behavior.
+
+* Tip
+By adding : this() to the signature of the second Employer constructor, we are 
+using a new technique called constructor chaining. For more info on how this 
+chaining technique works, check out this blog post!
+
+Complete the Support Classes
+Sally needs you to build up the remaining classes. In each case, refer to the Employer 
+class for hints on how to structure your code.
+
+The Location Class
+Open the Location.cs file. Note that the methods for this class are done, as is the 
+constructor for initializing the Id property.
+
+Sally left you a TODO comment with instructions for coding a second constructor:
+
+1. It should call the first constructor to initialize the id field.
+2. It must also initialize the value field for a new Location object.
+
+The CoreCompetency Class
+
+Open the class file. In this case, the constructors and custom methods are ready. Sally needs
+you to change the id and value fields to auto-implemented properties, but NOT nextId.
+
+The PositionType Class
+Open the class file. This time the constructors are done. Sally’s comments direct you to where 
+you need to add the custom methods.
+
+1. Code a ToString() method that just returns the value of a PositionType object.
+2. Use the Generate option again to add the Equals() and GetHashCode() methods. Refer 
+   to the final section of the “Classes and Objects, Part 2” chapter if you need a quick 
+   review.
+3. Assume that two PositionType objects are equal when their id fields match.
+
+Tip
+Now would be a good time to save, commit, and push your work up to GitHub.
+
+Complete the Job Class
+Now open the Job file. OOF! There are a lot of fields and properties declared and not much 
+else.
+
+1. Code a constructor to initialize the id field with a unique value. This constructor should 
+   take no parameters.
+2. Code a second constructor that takes 5 parameters and assigns values to name,
+   employerName, employerLocation, jobType, and jobCoreCompetency. Also, this 
+   constructor should call the first in order to initialize the id field.
+3. Generate the Equals() and GetHashCode() methods. Consider two Job objects equal
+   when their id fields match.
+
+Tip
+Save, commit, and push your work to GitHub.
+
+Use Unit Testing to Verify Parts of the Job Class
+
+Create a new project inside the TechJobsOO solution called TechJobsTests, then rename
+the existing class inside this folder to JobTests.cs. Add the appropriate dependency to
+TechJobsTests to test the classes in the TechJobsOO project. The JobTests.cs file will hold all
+of the tests for the Job class.
+
+Test the Empty Constructor
+Each Job object should contain a unique ID number, and these should also be sequential 
+integers.
+
+1. In JobTests, define a test called TestSettingJobId.
+2. Create two Job objects using the empty constructor. Use Assert.AreEqual,
+   Assert.IsTrue, or Assert.IsFalse to test that the ID values for the two objects are NOT
+   the same and differ by 1.
+
+3. Run the test to verify that your Job() constructor correctly assigns ID numbers.
+
+4. If the test doesn’t pass, what should be your first thought?
+	a. “I need to fix the unit test.”
+	b. “I need to fix my Job() constructor code.”
+
+Warning
+The answer is NOT “a”.
+
+Your test code might be incorrect, but that should not be your FIRST thought. TDD begins with writing tests for desired behaviors. If the tests fail, that indicates errors in the methods trying to produce the behavior rather than in the tests that define that behavior.
+
+Test the Full Constructor
+Each Job object should contain six properties—Id, Name, EmployerName, EmployerLocation,
+JobType, and JobCoreCompetency.
+
+1. In JobTest, define a test called TestJobConstructorSetsAllFields.
+2. Declare and initialize a new Job object with the following data: "Product tester" for
+   Name, "ACME" for EmployerName, "Desert" for JobLocation, "Quality control" for 
+   JobType, and "Persistence" for JobCoreCompetency.
+3. Use Assert statements to test that the constructor correctly assigns the value of each 
+   field.
+
+Test the Equals() Method
+Two Job objects are considered equal if they have the same id value, even if one or more of
+the other fields differ. Similarly, the two objects are NOT equal if their id values differ, even if 
+all the other fields are identical.
+
+1. In JobTest, define a test called TestJobsForEquality.
+2. Generate two Job objects that have identical field values EXCEPT for id. Test that
+   Equals() returns false.
+
+It might seem logical to follow up the false case by testing to make sure that Equals()
+returns true when two objects have the same ID. However, the positive test is irrelevant in
+this case.
+
+The way you built your Job class, each id field gets assigned a unique value, and the class
+does not contain a setter for the id field. You also verified that each new object gets a
+different ID when you tested the constructors. Without modifying the constructors or adding
+a setter, there is no scenario in which two different jobs will have the same ID number. Thus,
+we can skip the test for this condition.
+
+Tip
+Time to save, commit, and push your work to GitHub again.
+
+Use TDD to Build The ToString() Method
+To display the data for a particular Job object, you need to implement a custom ToString()
+method. Rather than creating this method and then testing it, you will flip that process using 
+TDD.
+
+Create First Test for ToString()
+Before writing your first test, consider how we want the method to behave:
+
+1. When passed a Job object, it should return a string that contains a blank line before and
+   after the job information.
+2. The string should contain a label for each field, followed by the data stored in that field. 
+   Each field should be on its own line.
+
+ID:  _______
+Name: _______
+Employer: _______
+Location: _______
+Position Type: _______
+Core Competency: _______
+
+3. If a field is empty, the method should add, “Data not available” after the label.
+4. (Bonus) If a Job object ONLY contains data for the id field, the method should return, 
+   “OOPS! This job does not seem to exist.”
+
+In JobTests, add a new test to check the first requirement (item 1 in the above list), then run
+that test (it should fail).
+
+Woo hoo! Failure is what we want here! Now you get to fix that.
+
+Code ToString() to Pass the First Test
+In the Job class, create a ToString() method that passes the first test. Since the test only
+checks if the returned string starts and ends with a blank line, make that happen.
+
+Tip
+Do NOT add anything beyond what is needed to make the test pass. You will add the remaining behaviors for ToString() as you code each new test.
+
+Finish the TDD for ToString()
+1. Code a new test for the second required behavior, then run the tests to make sure the 
+   new one fails.
+2. Modify ToString() to make the new test pass. Also, make sure that your updates still
+   pass all of the old tests.
+3. Continue this test-refactor cycle until all of the behaviors we want for ToString() work.
+   Remember to add only ONE new test at a time.
+
+Cool! Your Job class is now complete and operates as desired.
+
+Refactor to DRY the Support Classes
+Review the code in the Employer, Location, CoreCompetency, and PositionType classes. What
+similarities do you see?
+
+There is a fair amount of repetition between the classes. As a good coder, anytime you find 
+yourself adding identical code in multiple locations you should consider how to streamline the 
+process.
+
+DRY = “Don’t Repeat Yourself”.
+
+Create a Base Class
+Let’s move all of the repeated code into a separate class. We will then have Employer,
+Location, CoreCompetency, and PositionType inherit this common code.
+
+1. Create a new class called JobField.
+2. Consider the following questions to help you decide what code to put in the JobField
+   class:
+	a. What fields do ALL FOUR of the classes have in common?
+	b. Which constructors are the same in ALL FOUR classes?
+	c. Which custom methods are identical in ALL of the classes?
+3. In JobField, declare each of the common class members.
+4. Code the constructors.
+5. Add in any inherited method overrides.
+6. Finally, to prevent the creation of a JobField object, make this class abstract.
+
+Extend JobField into Employer
+
+Now that you have the common code located in the JobField file, we can modify the other
+classes to reference this shared code. Let’s begin with Employer.
+
+1. Modify line 5 to extend the JobField class into Employer.
+2. Next, remove any code in Employer that matches code from JobField (e.g. the Id and
+   Value properties and the nextId field are shared).
+3. Remove any of the methods that are identical.
+4. The empty constructor is shared, but not the second. Replace the two constructors with 
+   the following:
+
+7| public Employer(string value) : base(value)
+8| {
+9| }
+
+5. Rerun your unit tests to verify your refactored code.
+
+Finish DRYing Your Code
+1. Repeat the process above for the Location, CoreCompetency, and PositionType classes.
+2. Rerun your unit tests to verify that your classes and methods still work.
+
+Tip
+You know you need to do this, but here is the reminder anyway. Save,
+commit, and push your work to GitHub.
+
+Sanity Check
+Once you finish all of the tasks outlined above, all that remains is to check the console display.
+
+Sally has provided some commented-out code in Program.cs that prints out a small list of Job
+objects. Go ahead and activate this code and run it. Properly done, your output should look
+something like:
+
+ID: 1
+Name: Product tester
+Employer: ACME
+Location: Desert
+Position Type: Quality control
+Core Competency: Persistence
+
+
+ID: 2
+Name: Web Developer
+Employer: LaunchCode
+Location: St. Louis
+Position Type: Front-end developer
+Core Competency: JavaScript
+
+
+ID: 3
+Name: Ice cream tester
+Employer: Data not available
+Location: Home
+Position Type: UX
+Core Competency: Tasting ability
+
+Excellent! You successfully shifted the old console app into a more useful object oriented
+configuration.
+
+Now that the new structure is ready, another team member can refactor the import and 
+display methods from the previous assignment to use the new classes. Once these are ready,
+our team will refine the search features and move the app online to provide a better user 
+interface.
+
+How to Submit
+To turn in your assignment and get credit, follow the submission instructions
