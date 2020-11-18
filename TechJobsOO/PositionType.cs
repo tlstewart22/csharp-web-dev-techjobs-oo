@@ -27,6 +27,9 @@ namespace TechJobsOO
             return obj is PositionType type &&
                    Id == type.Id &&
                    Value == type.Value;
+
+            // I think that I need to add more here. 
+            // 3. Assume that two PostionType objects are equal when their id fields match.
         }
 
         public override int GetHashCode()
